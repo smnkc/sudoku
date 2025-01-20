@@ -1,0 +1,371 @@
+/* Temel Stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Başlık */
+h1 {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Oyun Kontrolleri */
+.game-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+button, select {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#newGame {
+    background: #4c51bf;
+    color: white;
+}
+
+#newGame:hover {
+    background: #434190;
+    transform: translateY(-2px);
+}
+
+#hintButton {
+    background: #38b2ac;
+    color: white;
+}
+
+#hintButton:hover {
+    background: #319795;
+    transform: translateY(-2px);
+}
+
+#hintButton.active {
+    background: #2c7a7b;
+    transform: translateY(0);
+}
+
+select {
+    background: #edf2f7;
+    color: #2d3748;
+}
+
+select:hover {
+    background: #e2e8f0;
+}
+
+/* İstatistikler */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #4a5568;
+    font-size: 0.9rem;
+    background: #f7fafc;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Sudoku Tahtası */
+.board {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    background: #2d3748;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 2px solid #2d3748;
+}
+
+.board div {
+    width: 100%;
+    aspect-ratio: 1;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    border-right: 1px solid #2d3748;
+    border-bottom: 1px solid #2d3748;
+}
+
+/* 3x3 kutu çizgileri */
+.board div:nth-child(3n):not(:nth-child(9n)) {
+    border-right: 2px solid #2d3748;
+}
+
+.board div:nth-child(n+19):nth-child(-n+27),
+.board div:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid #2d3748;
+}
+
+/* Son sütun ve satır için border yok */
+.board div:nth-child(9n) {
+    border-right: none;
+}
+
+.board div:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: none;
+}
+
+/* Hücre Durumları */
+.board div.selected {
+    background: #ebf4ff;
+    box-shadow: inset 0 0 0 2px #4299e1;
+}
+
+.board div.fixed {
+    color: #2d3748;
+    font-weight: 600;
+    background: #f7fafc;
+}
+
+.board div.error {
+    color: #e53e3e;
+    animation: shake 0.5s ease-in-out;
+}
+
+.board div.correct {
+    color: #38a169;
+    animation: pulse 0.5s ease-in-out;
+}
+
+.board div.same-number {
+    background: #e6fffa;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* İpucu Stilleri */
+.board div.has-hints {
+    position: relative;
+}
+
+.hints-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: rgba(248, 249, 250, 0.98);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.possible-number {
+    color: #666;
+    font-size: 0.65rem;
+    padding: 1px;
+    width: calc(100% / 3);
+    text-align: center;
+}
+
+/* Kalan Sayılar */
+.remaining-numbers {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.remaining-title {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.number-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.number-count {
+    padding: 5px 10px;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.number-count.completed {
+    background: #e2e8f0;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+/* Sayı Seçici */
+.number-picker {
+    position: absolute;
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.number-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 180px;
+}
+
+.picker-num {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    background: #edf2f7;
+    color: #2d3748;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.picker-num:hover {
+    background: #e2e8f0;
+    transform: scale(1.05);
+}
+
+#pickerEraser {
+    grid-column: span 3;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    background: #cbd5e0;
+    color: #2d3748;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+#pickerEraser:hover {
+    background: #a0aec0;
+}
+
+/* Animasyonlar */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .board div {
+        font-size: 1rem;
+    }
+
+    .game-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .stats {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    .possible-number {
+        font-size: 0.6rem;
+        padding: 1px;
+    }
+
+    .number-picker {
+        position: fixed;
+        left: 50% !important;
+        top: auto !important;
+        bottom: 20px !important;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .number-grid {
+        width: 100%;
+    }
+
+    .number-counts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+
+    .number-count {
+        text-align: center;
+        padding: 4px;
+        font-size: 0.8rem;
+    }
+} 

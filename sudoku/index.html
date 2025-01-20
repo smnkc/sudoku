@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Sudoku Oyunu</h1>
+        <div class="game-options">
+            <button id="newGame">Yeni Oyun</button>
+            <button id="hintButton">İpucu</button>
+            <select id="difficulty">
+                <option value="easy">Kolay</option>
+                <option value="medium">Orta</option>
+                <option value="hard">Zor</option>
+            </select>
+        </div>
+        <div class="stats">
+            <div class="timer">Süre: <span id="time">00:00</span></div>
+            <div class="mistakes">Hata: <span id="mistakes">0</span>/3</div>
+        </div>
+        <div id="board" class="board"></div>
+        <div class="remaining-numbers">
+            <div class="remaining-title">Kalan Sayılar:</div>
+            <div class="number-counts"></div>
+        </div>
+    </div>
+
+    <div class="number-picker" id="numberPicker">
+        <div class="number-grid">
+            <button class="picker-num">1</button>
+            <button class="picker-num">2</button>
+            <button class="picker-num">3</button>
+            <button class="picker-num">4</button>
+            <button class="picker-num">5</button>
+            <button class="picker-num">6</button>
+            <button class="picker-num">7</button>
+            <button class="picker-num">8</button>
+            <button class="picker-num">9</button>
+            <button id="pickerEraser">Sil</button>
+        </div>
+    </div>
+
+    <script src="sudoku.js"></script>
+</body>
+</html> 
